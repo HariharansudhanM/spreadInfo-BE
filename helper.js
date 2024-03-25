@@ -1,5 +1,6 @@
 import { client } from "./index.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 async function getUserbyEmail(email) {
   return await client

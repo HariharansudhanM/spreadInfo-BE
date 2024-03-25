@@ -1,5 +1,6 @@
 import express from "express";
 import userRouter from "./UserRoutes.js";
+import blogRouter from "./BlogRouter.js";
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -7,5 +8,6 @@ router.get("/", (req, res) => {
 });
 
 router.use("/users", userRouter);
+router.use("/blogs", blogRouter);
 
 export default router;
