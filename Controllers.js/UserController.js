@@ -35,6 +35,16 @@ const registerUser = async (req, res) => {
     console.log(hashPassword);
     const uploadData = req.body;
     uploadData["hashPassword"] = hashPassword;
+
+    const totalAccounts = await client
+      .db("Spread_Info")
+      .collection("Users")
+      .find({})
+      .toArray();
+    const id = totalAccounts.length + 1;
+    // console.log("" + id);
+    uploadData["id"] = "" + id;
+
     const result = await client
       .db("Spread_Info")
       .collection("Users")
@@ -65,7 +75,7 @@ const login = async (req, res) => {
     );
     // console.log(isPasswordMatch);
     if (!isPasswordMatch) {
-      res.send({ message: "Invalid Credentials" });
+      res.status(401).send({ message: "Invalid Credentials" });
       return;
     }
 
@@ -80,7 +90,7 @@ const login = async (req, res) => {
       process.env.SECRET_KEY,
       { expiresIn: "10m" }
     );
-    res.send({
+    res.status(200).send({
       message: "Successfully Logged In",
       token: token,
       Role: userFromDB.Role,
@@ -121,6 +131,7 @@ const editUser = async (req, res) => {
   try {
     const { id } = req.params;
     const userData = req.body;
+
     const result = await client
       .db("Spread_Info")
       .collection("Users")

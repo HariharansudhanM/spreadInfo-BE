@@ -4,6 +4,15 @@ const createBlog = async (req, res) => {
   try {
     const blogData = req.body;
 
+    const data = await client
+      .db("Spread_Info")
+      .collection("Blogs")
+      .find({})
+      .toArray();
+
+    const id = data.length + 1;
+    blogData["id"] = id;
+
     const result = await client
       .db("Spread_Info")
       .collection("Blogs")
@@ -46,10 +55,14 @@ const getBlogs = async (req, res) => {
 const deleteBlog = async (req, res) => {
   try {
     const { id } = req.params;
+
+    const Id = Number(id);
+    console.log(typeof Id);
+
     const result = await client
       .db("Spread_Info")
       .collection("Blogs")
-      .deleteOne({ id: id });
+      .deleteOne({ id: Id });
 
     res.status(200).send({ message: `Blogs deleted`, result });
   } catch (error) {
