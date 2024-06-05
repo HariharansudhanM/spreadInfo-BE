@@ -29,11 +29,14 @@ const createBlog = async (req, res) => {
 const editBlog = async (req, res) => {
   try {
     const { id } = req.params;
+    const Id = Number(id);
+
     const blogData = req.body;
+
     const result = await client
       .db("Spread_Info")
       .collection("Blogs")
-      .updateOne({ id: id }, { $set: blogData });
+      .updateOne({ id: Id }, { $set: blogData });
     res.status(200).send({ message: `Blog updated successfully`, result });
   } catch (error) {
     res.status(500).send({ message: error.message || `Internal server error` });
