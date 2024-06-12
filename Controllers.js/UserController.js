@@ -14,6 +14,21 @@ const getAllUsers = async (req, res) => {
   res.send(results);
 };
 
+const checkEmail = async (req, res) => {
+  try {
+    const { Email } = req.body;
+    const isUserExist = await getUserbyEmail(Email);
+    if (isUserExist) {
+      res.status(200).send({ message: "Username exists" });
+      return;
+    } else {
+      res.status(400).send({ message: "User not exists" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const registerUser = async (req, res) => {
   try {
     const { Email, Password } = req.body;
@@ -141,4 +156,4 @@ const editUser = async (req, res) => {
     res.status(500).send({ message: error.message || `Internal server error` });
   }
 };
-export { getAllUsers, registerUser, login, deleteUser, editUser };
+export { getAllUsers, registerUser, login, deleteUser, editUser, checkEmail };
